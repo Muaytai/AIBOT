@@ -1,0 +1,2 @@
+AI_TOKEN='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'
+TG_TOKEN='7719608484:AAFgHhrgFtcmmepsqbn7Zxdg51Ltdbis7_A'
