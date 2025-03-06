@@ -1,0 +1,122 @@
+Ваши файлы `robots.txt` и `sitemap.xml` в целом корректны, но есть несколько моментов, которые стоит улучшить для правильной индексации. Разберем их по отдельности:
+
+---
+
+### **robots.txt**
+1. **Дублирование `Allow:`**  
+   У вас несколько раз используется `Allow: /`, но это избыточно. `Allow: /` уже разрешает индексацию всего сайта, поэтому дополнительные разрешения для конкретных путей (`/catalog/`, `/item/`, и т.д.) не нужны.  
+   *Рекомендация:* Удалите лишние `Allow:`, оставив только `Allow: /`.  
+
+2. **`Disallow: /search?*`**  
+   Запрет на индексацию параметров поиска (`?*`) корректен, но проверьте, действительно ли вы хотите полностью запретить индексацию страницы `/search`. Если на этом пути есть полезный контент, лучше разрешить индексацию.  
+
+3. **Директива `Host:`**  
+   Директива `Host:` устарела и больше не поддерживается Яндексом. Она не влияет на индексацию.  
+   *Рекомендация:* Удалите эту строку.  
+
+4. **Чистка параметров для Яндекса**  
+   Ваши `Clean-param` корректны, но убедитесь, что эти параметры действительно используются на сайте. Если они не применяются, их можно удалить.  
+
+---
+
+### **sitemap.xml**
+1. **Даты `lastmod`**  
+   Все даты `lastmod` указаны как `2025-01-23`, что не соответствует реальности. Используйте актуальные даты последнего изменения страниц.  
+   *Рекомендация:* Обновите `lastmod` на реальные даты.  
+
+2. **Частота обновлений (`changefreq`)**  
+   У некоторых страниц (например, `/`, `/search`) указана частота `daily`, но это может быть слишком часто, если контент не обновляется ежедневно.  
+   *Рекомендация:* Убедитесь, что `changefreq` соответствует реальной частоте обновления контента.  
+
+3. **Отсутствие закрывающих слэшей**  
+   У некоторых URL (например, `/catalog`, `/about`) отсутствуют закрывающие слэши. Это может привести к дублированию страниц (например, `/catalog` и `/catalog/`).  
+   *Рекомендация:* Добавьте закрывающие слэши (`/catalog/`, `/about/`) для единообразия.  
+
+4. **Приоритеты (`priority`)**  
+   Приоритеты указаны корректно, но помните, что они не влияют на ранжирование, а только помогают поисковым системам понять важность страниц.  
+
+---
+
+### **Итоговые рекомендации**
+- Упростите `robots.txt`, удалив лишние `Allow:` и устаревшую директиву `Host:`.  
+- Обновите даты `lastmod` и частоту `changefreq` в `sitemap.xml`.  
+- Добавьте закрывающие слэши в URL в `sitemap.xml`.  
+
+Пример улучшенного `robots.txt`:
+```plaintext
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /search?*
+
+User-agent: Yandex
+Clean-param: utm_source&utm_medium&utm_campaign
+Clean-param: ysclid&gclid&fbclid
+Clean-param: scat&*
+
+Sitemap: https://prootzyvy.com/sitemap.xml
+```
+
+Пример улучшенного `sitemap.xml`:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://prootzyvy.com/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/catalog/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/about/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/contacts/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/politic/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/user_agreement/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/support/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/articles/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prootzyvy.com/search/</loc>
+        <lastmod>2023-10-15</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+</urlset>
+```
+
+После внесения этих изменений файлы будут лучше соответствовать требованиям поисковых систем.

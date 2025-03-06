@@ -1,14 +1,15 @@
 import os  # Импортируем модуль os для работы с файлами
-from aiogram import F, Router
-from aiogram.types import Message
+from aiogram import F, Router, Bot
+from aiogram.types import Message, ContentType, InputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import CommandStart
 from aiogram.fsm.state import State, StatesGroup
+from config import TG_TOKEN
+
 from app.generate import ai_generate
-from aiogram import Bot  # Не забудьте импортировать Bot
 
 router = Router()
-bot = Bot(token=TG_TOKEN)  # Инициализируем бота
+bot = Bot(token=TG_TOKEN)
 
 class Gen(StatesGroup):
     wait = State()
@@ -29,8 +30,8 @@ async def send_code_file(chat_id: int, code: str):
         file.write(code)
     
     # Отправляем файл пользователю
-    with open(file_path, "rb") as file:
-        await bot.send_document(chat_id, file, caption="Вот ваш код.")
+    input_file = InputFile(file_path)  # Создаем экземпляр InputFile
+    await bot.send_document(chat_id, input_file, caption="Вот ваш код.")
     
     # Удаляем файл после отправки
     os.remove(file_path)
